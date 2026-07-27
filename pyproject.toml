@@ -1,0 +1,28 @@
+[project]
+name = "heterodyning-in-time-domain"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+[dependency-groups]
+# Pure-math unit tests — no LAL required.
+# Run with: uv run --group test pytest tests/test_math.py -v
+test = [
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "pytest>=8.0",
+]
+
+# Full integration tests — requires lal + lalsimulation installed separately.
+# Build them first: bash scripts/build_lal_wheels.sh
+# That script also runs `uv pip install lal-wheels/*.whl` at the end.
+# Run with: uv run --group test-integration pytest tests/test_likelihood.py -v
+test-integration = [
+    { include-group = "test" },
+    "bilby>=2.3",
+    "pycbc>=2.3",
+    # lal and lalsimulation are NOT listed here because they are not on PyPI.
+    # They are installed from local wheels by scripts/build_lal_wheels.sh.
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

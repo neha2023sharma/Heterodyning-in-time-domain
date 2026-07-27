@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 import sys
+import os
 import numpy as np
 from pycbc.detector import Detector
 import bilby
@@ -8,11 +9,12 @@ import json
 import dill
 from pycbc.waveform import get_td_waveform
 from bilby.gw.conversion import component_masses_to_chirp_mass, chirp_mass_and_mass_ratio_to_component_masses
-sys.path.append('/Users/nehasharma/Relative-binning-time-domain/Relative_binning_class/')
+_REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(_REPO_ROOT, 'Relative_binning_class'))
+sys.path.insert(0, os.path.join(_REPO_ROOT, 'ACF_noise_and_covariance_matrix_data'))
 from Exact_H1_frame import *
 # Same script can be used to sample geocentric time as well. The priors need to be modified.
-sys.path.append('/Users/nehasharma/Relative-binning-time-domain/ACF_noise_and_covariance_matrix_data/')
-from Noise_realisation import noise_realisation_from_psd
+# from Noise_realisation import noise_realisation_from_psd  # only needed for Gaussian noise block below
 
 # Loading the arguments from submit file.
 dict_file = sys.argv[1]
@@ -38,7 +40,7 @@ n = 2 #float(sys.argv[2])
 Time_array = np.arange(-n + 0.5, 0.5, 1 / 4096.0, dtype=np.float64)
 print("t[0]:", Time_array[0])
 
-with open("/Users/nehasharma/Relative-binning-time-domain/ACF_noise_and_covariance_matrix_data/x_and_y_2_sec.pkl","rb") as f:
+with open(os.path.join(_REPO_ROOT, "ACF_noise_and_covariance_matrix_data", "x_and_y_2_sec.pkl"), "rb") as f:
     Inv_cov_Noise = dill.load(f)
 x = Inv_cov_Noise["x"]
 y = Inv_cov_Noise["y"]

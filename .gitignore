@@ -1,0 +1,11 @@
+# lalsuite build tree
+.lal-build/
+
+# uv virtualenv
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
